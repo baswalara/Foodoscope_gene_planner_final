@@ -1,29 +1,39 @@
 #!/bin/bash
 
 # ==============================================================================
-# FOODOSCOPE LAUNCHER (Servers Only)
+# GENEEATS LAUNCHER — Mac / Linux
 # ==============================================================================
 # Usage: ./start.sh
-# 
-# 1. Activates Virtual Environment
-# 2. Starts Backend Server (Port 8000)
-# 3. Starts Frontend Server (Port 8001)
+#
+# On first run: auto-creates .venv and installs dependencies
+# On every run: frees ports 8000/8001, starts backend + frontend, opens browser
 # ==============================================================================
 
 # 1. NAVIGATE TO PROJECT ROOT
 cd "$(dirname "$0")"
 
-# 2. ACTIVATE VIRTUAL ENVIRONMENT
-if [ -d ".venv" ]; then
-    source .venv/bin/activate
-elif [ -d "venv" ]; then
-    source venv/bin/activate
-else
-    echo "❌ Error: Virtual environment not found."
-    exit 1
+# 2. AUTO-SETUP VIRTUAL ENVIRONMENT
+if [ ! -d ".venv" ]; then
+    echo "📦 No virtual environment found — creating one..."
+    python3 -m venv .venv
+    if [ $? -ne 0 ]; then
+        echo "❌ Failed to create virtual environment. Is Python 3 installed?"
+        exit 1
+    fi
+    echo "   -> .venv created"
+
+    echo "📥 Installing dependencies from backend/requirements.txt..."
+    .venv/bin/pip install --quiet -r backend/requirements.txt
+    if [ $? -ne 0 ]; then
+        echo "❌ pip install failed. Check backend/requirements.txt."
+        exit 1
+    fi
+    echo "   -> Dependencies installed"
 fi
 
-echo "✅ Virtual Environment Activated"
+# 3. ACTIVATE VIRTUAL ENVIRONMENT
+source .venv/bin/activate
+echo "✅ Virtual Environment Ready"
 
 # 3. FREE PORTS (kill anything on 8000 or 8001 from a previous session)
 echo "🔍 Checking ports 8000 & 8001..."

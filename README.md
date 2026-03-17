@@ -4,21 +4,20 @@
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 1. [Project Overview](#-project-overview)
 2. [Tech Stack](#-tech-stack)
 3. [Project Structure](#-project-structure)
 4. [Prerequisites](#-prerequisites)
-5. [First-Time Setup](#-first-time-setup)
-6. [Running the App](#-running-the-app)
-7. [Using the App](#-using-the-app)
-8. [Troubleshooting](#-troubleshooting)
-9. [Stopping the App](#-stopping-the-app)
+5. [Running the App](#-running-the-app)
+6. [Using the App](#-using-the-app)
+7. [Troubleshooting](#-troubleshooting)
+8. [Stopping the App](#-stopping-the-app)
 
 ---
 
-## 🧬 Project Overview
+## Project Overview
 
 GeneEats helps users plan their weekly meals by:
 - Calculating **BMI, BMR, TDEE, and daily calorie targets** from their personal profile
@@ -28,7 +27,7 @@ GeneEats helps users plan their weekly meals by:
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 | Layer    | Technology |
 |----------|-----------|
@@ -39,7 +38,7 @@ GeneEats helps users plan their weekly meals by:
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 v2/
@@ -60,54 +59,55 @@ v2/
 │       ├── diet.js                       # Generates 7-day diet plan
 │       └── tabs.js                       # Tab navigation & locking
 │
-├── start.sh                              # Launcher for Mac / Linux
-├── start.bat                             # Launcher for Windows
-├── readme                                # Plain-text quick reference
+├── start.sh                              # Launcher for Mac / Linux (auto-setup on first run)
+├── start.bat                             # Launcher for Windows  (auto-setup on first run)
 └── README.md                             # This file
 ```
 
 ---
 
-## ✅ Prerequisites
+## Prerequisites
 
-Make sure these are installed before you begin:
+The **only** thing you need installed:
 
-| Tool | Minimum Version | Check with |
-|------|----------------|------------|
+| Tool | Minimum Version | Check |
+|------|----------------|-------|
 | Python | 3.10+ | `python3 --version` |
-| pip | bundled with Python | `pip --version` |
 
-> **Windows users:** Use **Command Prompt** or **PowerShell** — not Git Bash — for the commands below.
+> **Windows users:** Use **Command Prompt** — not Git Bash — to run `start.bat`.
+
+> Everything else (virtual environment, pip packages) is handled automatically by the launcher.
 
 ---
 
-## 🚀 First-Time Setup
+## Running the App
 
-> Run these steps **once** when you first clone or receive the project.
+> **Just cloned the repo? No manual setup needed — just run the launcher.**
 
-### Step 1 — Create a virtual environment
+| Platform | Command |
+|----------|---------|
+| Linux | `./start.sh` |
+| Mac | `./start.sh` |
+| Windows | Double-click `start.bat` (or run in Command Prompt) |
 
-```bash
-# Mac / Linux
-python3 -m venv .venv
+**What happens on the very first run:**
+1. Creates a `.venv` virtual environment automatically
+2. Installs all Python packages from `backend/requirements.txt`
+3. Frees ports 8000 and 8001 if anything else is using them
+4. Starts the **backend** API on **port 8000**
+5. Starts the **frontend** server on **port 8001**
+6. Opens your browser at **http://localhost:8001**
 
-# Windows
-python -m venv .venv
-```
+**On every run after that**, steps 1 and 2 are skipped — startup is instant.
 
-### Step 2 — Install dependencies
+> If the browser doesn't open automatically, go to **http://localhost:8001** manually.
 
-```bash
-# Mac / Linux
-.venv/bin/pip install -r backend/requirements.txt
+---
 
-# Windows
-.venv\Scripts\pip install -r backend\requirements.txt
-```
+### Optional — Regenerate recipe data
 
-### Step 3 — Generate recipe data *(optional — skip if `backend/final_output.json` already exists)*
-
-> ⚠️ This step requires the **NutriDNA API server** to be running on the same local network (IP `192.168.1.92:3030`). If you don't have access to it, skip this step — the pre-generated `final_output.json` file is included and the app will work fine.
+> Only needed to refresh data from the NutriDNA API (`192.168.1.92:3030`).  
+> The repo already ships with `backend/final_output.json` — skip this unless you need new data.
 
 ```bash
 # Mac / Linux
@@ -119,25 +119,7 @@ cd backend && ..\.venv\Scripts\python generate_data.py && cd ..
 
 ---
 
-## ▶️ Running the App
-
-| Platform | Command |
-|----------|---------|
-| 🐧 Linux | `./start.sh` |
-| 🍎 Mac | `./start.sh` |
-| 🪟 Windows | Double-click `start.bat` — or run it in Command Prompt |
-
-The script will:
-1. Activate the virtual environment
-2. Start the **backend** API server on **port 8000**
-3. Start the **frontend** HTTP server on **port 8001**
-4. Automatically open your browser at **http://localhost:8001**
-
-> If the browser doesn't open automatically, go to **http://localhost:8001** manually.
-
----
-
-## 🧭 Using the App
+## Using the App
 
 The app has four tabs — they unlock in order as you complete each step:
 
@@ -158,18 +140,20 @@ localStorage.clear(); location.reload();
 
 ---
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 | Problem | Cause | Fix |
 |---------|-------|-----|
-| `Backend failed to start` | Port 8000 is already in use | Run `fuser -k 8000/tcp 8001/tcp` (Linux/Mac) or kill processes in Task Manager (Windows) |
-| `Could not load recipes` | Backend isn't running | Make sure `start.sh` / `start.bat` ran without errors |
-| `generate_data.py` times out | NutriDNA API server unreachable | Skip step 3 — use the existing `final_output.json` |
+| `Backend failed to start` | Port still locked after force-kill | Wait 2 sec and re-run the launcher |
+| `Could not load recipes` | Backend isn't running | Re-run the launcher and check for errors |
+| `generate_data.py` times out | NutriDNA API unreachable | Skip — use the existing `final_output.json` |
 | Page shows old data | Cached localStorage | Run `localStorage.clear(); location.reload();` in browser console |
+| `python3` not found (Linux/Mac) | Python not installed | Install from [python.org](https://python.org) |
+| `python` not found (Windows) | Python not on PATH | Reinstall Python and tick **Add to PATH** |
 
 ---
 
-## ⏹ Stopping the App
+## Stopping the App
 
 | Platform | How to stop |
 |----------|------------|

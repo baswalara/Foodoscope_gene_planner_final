@@ -1,31 +1,41 @@
 @echo off
 :: ==============================================================================
-:: FOODOSCOPE LAUNCHER — Windows
+:: GENEEATS LAUNCHER — Windows
 :: ==============================================================================
 :: Usage: Double-click start.bat  OR  run it in Command Prompt
 ::
-:: 1. Activates Virtual Environment
-:: 2. Starts Backend Server  (Port 8000)
-:: 3. Starts Frontend Server (Port 8001)
+:: On first run: auto-creates .venv and installs dependencies
+:: On every run: frees ports 8000/8001, starts backend + frontend, opens browser
 :: ==============================================================================
 
 title GeneEats Launcher
 cd /d "%~dp0"
 
-:: 1. ACTIVATE VIRTUAL ENVIRONMENT
-if exist ".venv\Scripts\activate.bat" (
-    call .venv\Scripts\activate.bat
-) else if exist "venv\Scripts\activate.bat" (
-    call venv\Scripts\activate.bat
-) else (
-    echo [ERROR] Virtual environment not found.
-    echo Run:  python -m venv .venv
-    echo Then: .venv\Scripts\pip install -r backend\requirements.txt
-    pause
-    exit /b 1
+:: 1. AUTO-SETUP VIRTUAL ENVIRONMENT
+if not exist ".venv\Scripts\activate.bat" (
+    echo [..] No virtual environment found -- creating one...
+    python -m venv .venv
+    if errorlevel 1 (
+        echo [ERROR] Failed to create virtual environment.
+        echo         Make sure Python 3 is installed and on your PATH.
+        pause
+        exit /b 1
+    )
+    echo    [OK] .venv created
+
+    echo [..] Installing dependencies from backend\requirements.txt...
+    .venv\Scripts\pip install --quiet -r backend\requirements.txt
+    if errorlevel 1 (
+        echo [ERROR] pip install failed. Check backend\requirements.txt.
+        pause
+        exit /b 1
+    )
+    echo    [OK] Dependencies installed
 )
 
-echo [OK] Virtual Environment Activated
+:: 2. ACTIVATE VIRTUAL ENVIRONMENT
+call .venv\Scripts\activate.bat
+echo [OK] Virtual Environment Ready
 
 :: 2. FREE PORTS (kill any process on 8000 or 8001 from a previous session)
 echo [..] Checking ports 8000 ^& 8001...
