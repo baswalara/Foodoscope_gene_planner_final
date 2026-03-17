@@ -1,0 +1,42 @@
+=================================================
+ GeneEats — Planner by Foodoscope
+=================================================
+
+FIRST-TIME SETUP (run once)
+─────────────────────────────────────────────────
+1. Create a virtual environment:
+     python3 -m venv .venv          ← Mac / Linux
+     python  -m venv .venv          ← Windows
+
+2. Install dependencies:
+     Mac / Linux:  .venv/bin/pip install -r backend/requirements.txt
+     Windows:      .venv\Scripts\pip install -r backend\requirements.txt
+
+3. Generate recipe data (needs the NutriDNA API server on the same network):
+     Mac / Linux:  cd backend && ../.venv/bin/python3 generate_data.py && cd ..
+     Windows:      cd backend && ..\\.venv\Scripts\python generate_data.py && cd ..
+
+   NOTE: generate_data.py connects to a local API server (192.168.1.92:3030).
+   Skip this step if final_output.json already exists in the backend/ folder.
+
+
+RUNNING THE APP
+─────────────────────────────────────────────────
+  Mac / Linux:   ./start.sh
+  Windows:       start.bat   (double-click it, or run in Command Prompt)
+
+Then open your browser at:  http://localhost:8001
+
+
+REFRESH DATA (browser console)
+─────────────────────────────────────────────────
+If the page shows stale content after re-running generate_data.py,
+open DevTools (F12) → Console tab and run:
+
+  localStorage.clear(); location.reload();
+
+
+STOPPING THE APP
+─────────────────────────────────────────────────
+  Mac / Linux:   Press Ctrl+C in the terminal running start.sh
+  Windows:       Close the Command Prompt window that ran start.bat

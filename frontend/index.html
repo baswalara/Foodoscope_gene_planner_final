@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodoscope - Planner by NutriDNA</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <aside class="sidebar">
+            <div class="brand">
+                <span class="logo-icon">🍃</span>
+                <div class="brand-text">
+                    <h1>DNAdiet</h1>
+                    <p>Planner by Foodoscope</p>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-item active" data-target="basic">
+                    <span class="icon">👤</span> Basic Info
+                </button>
+                <button class="nav-item locked" data-target="calculations">
+                    <span class="icon">📊</span> Your Numbers
+                </button>
+                <button class="nav-item locked" data-target="recipes">
+                    <span class="icon">🍲</span> Suggested Recipes
+                </button>
+                <button class="nav-item locked" data-target="diet">
+                    <span class="icon">📅</span> Diet Plan
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="promo-box">
+                    <span class="leaf">🌿</span>
+                    <p>Eat well. Live well.</p>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+
+            <header class="top-header">
+                <div class="welcome-text">
+                    <h2 id="welcome-msg">Welcome! 👋</h2>
+                    <p>Let's plan your nutrition journey.</p>
+                </div>
+                <div class="user-avatar" id="user-initials"></div>
+            </header>
+
+            <div class="content-area">
+
+                <section id="basic" class="tab-content active">
+                    <div class="form-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="user-avatar" id="user-initials"></div>
+                                <div class="header-info">
+                                    <h3>Personal Profile</h3>
+                                    <input type="text" id="full-name" placeholder="Enter your Name" class="ghost-input">
+                                </div>
+                            </div>
+                            <div class="input-group-row">
+                                <div class="input-field">
+                                    <label>Age</label>
+                                    <div class="input-wrapper">
+                                        <input type="number" id="age" placeholder="28">
+                                        <span class="unit">years</span>
+                                    </div>
+                                </div>
+                                <div class="input-field">
+                                    <label>Weight</label>
+                                    <div class="input-wrapper">
+                                        <input type="number" id="weight" placeholder="62">
+                                        <span class="unit">kg</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group-row">
+                                <div class="input-field">
+                                    <label>Height</label>
+                                    <div class="input-wrapper">
+                                        <input type="number" id="height" placeholder="165">
+                                        <span class="unit">cm</span>
+                                    </div>
+                                </div>
+                                <div class="input-field">
+                                    <label>Target Weight <span class="opt">(Optional)</span></label>
+                                    <div class="input-wrapper">
+                                        <input type="number" id="target-weight" placeholder="55">
+                                        <span class="unit">kg</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Lifestyle & Goals</h3>
+                            </div>
+                            <div class="input-field">
+                                <label>Gender</label>
+                                <select id="gender" class="modern-select">
+                                    <option value="" disabled selected>Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+                            <div class="input-field">
+                                <label>Activity Level</label>
+                                <select id="activity" class="modern-select">
+                                    <option value="" disabled selected>Select Activity Level</option>
+                                    <option value="1.2">Sedentary</option>
+                                    <option value="1.375">Lightly Active</option>
+                                    <option value="1.55">Moderately Active</option>
+                                    <option value="1.725">Very Active</option>
+                                </select>
+                            </div>
+                            <div class="input-field">
+                                <label>Goal</label>
+                                <select id="goal" class="modern-select">
+                                    <option value="" disabled selected>Select Goal</option>
+                                    <option value="loss">Weight Loss</option>
+                                    <option value="maintain">Maintenance</option>
+                                    <option value="gain">Muscle Gain</option>
+                                </select>
+                            </div>
+                            <div class="input-row">
+                                <div class="input-field half">
+                                    <label>Diet Type</label>
+                                    <select id="diet-type" class="modern-select">
+                                        <option value="" disabled selected>Select Diet Type</option>
+                                        <option value="veg">Vegetarian</option>
+                                        <option value="non-veg">Non-Vegetarian</option>
+                                        <option value="vegan">Vegan</option>
+                                        <option value="keto">Keto</option>
+                                    </select>
+                                </div>
+                                <div class="input-field half">
+                                    <label>Meals / Day</label>
+                                    <select id="meals" class="modern-select">
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="action-area">
+                        <button id="calculate-btn" class="primary-btn">Calculate Metrics ➔</button>
+                    </div>
+                </section>
+
+                <section id="calculations" class="tab-content">
+                    <div class="section-header-row">
+                        <h2>Your Numbers 📊</h2>
+                        <p>Here's a breakdown based on your profile.</p>
+                    </div>
+
+                    <div class="dashboard-grid top-row">
+
+                        <div class="dash-card center-align">
+                            <div class="card-label">Body Mass Index (BMI)</div>
+
+                            <div class="gauge-container">
+                                <div class="gauge-background"></div>
+                                <div class="gauge-overlay"></div>
+                                <div class="needle-wrapper" id="gauge-needle">
+                                    <div class="needle-dot"></div>
+                                </div>
+                            </div>
+
+                            <div class="gauge-text">
+                                <div class="big-value" id="bmi-val">--</div>
+                                <div class="sub-label" id="bmi-text">--</div>
+                            </div>
+                        </div>
+
+                        <div class="dash-card center-align">
+                            <div class="card-label">Target Calories</div>
+
+                            <div class="ring-container">
+                                <svg class="progress-ring" width="160" height="160">
+                                    <circle class="progress-ring__circle-bg" stroke="#E5E7EB" stroke-width="12"
+                                        fill="transparent" r="70" cx="80" cy="80" />
+                                    <circle class="progress-ring__circle" id="cal-ring" stroke="#2F855A"
+                                        stroke-width="12" fill="transparent" r="70" cx="80" cy="80" />
+                                </svg>
+                                <div class="ring-inner-text">
+                                    <div class="big-value" id="cal-target">--</div>
+                                    <div class="sub-label">kcal/day</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="section-subtitle">Macro Breakdown</h3>
+                    <div class="dashboard-grid macros-row">
+                        <div class="dash-card macro-box">
+                            <div class="macro-icon">🥩</div>
+                            <div class="macro-name">Protein</div>
+                            <div class="macro-value highlight-purple" id="macro-p">--</div>
+                            <div class="macro-sub">20% of total</div>
+                        </div>
+                        <div class="dash-card macro-box">
+                            <div class="macro-icon">🍞</div>
+                            <div class="macro-name">Carbs</div>
+                            <div class="macro-value highlight-orange" id="macro-c">--</div>
+                            <div class="macro-sub">50% of total</div>
+                        </div>
+                        <div class="dash-card macro-box">
+                            <div class="macro-icon">🥑</div>
+                            <div class="macro-name">Fat</div>
+                            <div class="macro-value highlight-green" id="macro-f">--</div>
+                            <div class="macro-sub">30% of total</div>
+                        </div>
+                    </div>
+
+                    <h3 class="section-subtitle">Fitness Summary</h3>
+                    <div class="dash-card summary-card">
+                        <div class="summary-table">
+                            <div class="summary-col">
+                                <div class="summ-row">
+                                    <span class="lbl">Gender</span>
+                                    <span class="val" id="res-gender">--</span>
+                                </div>
+                                <div class="summ-row">
+                                    <span class="lbl">Age</span>
+                                    <span class="val" id="res-age">--</span>
+                                </div>
+                                <div class="summ-row">
+                                    <span class="lbl">Height</span>
+                                    <span class="val" id="res-height">--</span>
+                                </div>
+                                <div class="summ-row">
+                                    <span class="lbl">Current Weight</span>
+                                    <span class="val" id="res-weight">--</span>
+                                </div>
+                                <div class="summ-row">
+                                    <span class="lbl">Goal Weight</span>
+                                    <span class="val" id="res-goal-weight">--</span>
+                                </div>
+                                <div class="summ-row last">
+                                    <span class="lbl">Activity Level</span>
+                                    <span class="val bold" id="res-act">--</span>
+                                </div>
+                            </div>
+
+                            <div class="summary-col">
+                                <div class="summ-row">
+                                    <span class="lbl">BMR (Mifflin-St Jeor)</span>
+                                    <span class="val" id="res-bmr">--</span>
+                                </div>
+                                <div class="summ-row">
+                                    <span class="lbl">TDEE (Estimated)</span>
+                                    <span class="val" id="res-tdee">--</span>
+                                </div>
+
+                                <div class="summ-row highlight-row">
+                                    <span class="lbl highlight-text">Goal Adjustment</span>
+                                    <span class="val highlight-text" id="res-adj">--</span>
+                                </div>
+
+                                <div class="summ-row last">
+                                    <span class="lbl">Target Calories</span>
+                                    <span class="val bold" id="res-target">--</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="nav-buttons">
+                        <button class="secondary-btn"
+                            onclick="document.querySelector('[data-target=\'basic\']').click()">← Back</button>
+                        <button class="primary-btn"
+                            onclick="document.querySelector('[data-target=\'recipes\']').click()">Continue to Suggested
+                            Recipes ➔</button>
+                    </div>
+                </section>
+
+                <section id="recipes" class="tab-content">
+                    <div class="recipe-header">
+                        <div class="section-title-row">
+                            <h2>Recommended for You</h2>
+                            <span id="recipe-count" class="count-badge">512</span>
+                        </div>
+                        <p>Curated based on your DNA profile.</p>
+                    </div>
+
+                    <div class="card insights-card">
+                        <h3>GENETIC INSIGHTS</h3>
+                        <div id="needs-container" class="insights-list row-layout">
+                        </div>
+                    </div>
+
+                    <div class="ingredients-split-container">
+                        <div class="ing-col allowed">
+                            <div class="ing-header">
+                                <span class="icon">✅</span>
+                                <h4>Ingredients Allowed</h4>
+                            </div>
+                            <ul id="include-list" class="custom-check-list"></ul>
+                        </div>
+                        <div class="ing-col excluded">
+                            <div class="ing-header">
+                                <span class="icon">❌</span>
+                                <h4>Ingredients Excluded</h4>
+                            </div>
+                            <ul id="exclude-list" class="custom-cross-list"></ul>
+                        </div>
+                    </div>
+
+                    <div class="recipes-scroll-section">
+                        <h3>RECIPES</h3>
+                        <div id="recipe-container" class="recipe-scroll-menu"></div>
+                    </div>
+                    <div class="nav-buttons">
+                        <button class="primary-btn"
+                            onclick="document.querySelector('[data-target=\'diet\']').click()">Generate Diet Plan ➔</button>
+                    </div>
+                </section>
+
+
+                <section id="diet" class="tab-content">
+                <!-- Populated dynamically by diet.js when tab is opened -->
+            </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { initTabs } from './js/tabs.js';
+        import { calculateMetabolism } from './js/calculator.js';
+        import { initRecipeUpload } from './js/recipes.js';
+        import { initDietPlan } from './js/diet.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initTabs();
+            initRecipeUpload();
+
+            const calcBtn = document.getElementById('calculate-btn');
+            if (calcBtn) {
+                calcBtn.addEventListener('click', calculateMetabolism);
+            }
+
+            // Trigger diet plan generation when Diet Plan tab is clicked
+            const dietTab = document.querySelector('[data-target="diet"]');
+            if (dietTab) {
+                dietTab.addEventListener('click', () => {
+                    // Small delay so the tab switch animation fires first
+                    setTimeout(initDietPlan, 50);
+                });
+            }
+
+            const nameInput = document.getElementById('full-name');
+            const welcomeMsg = document.getElementById('welcome-msg');
+            const initials = document.getElementById('user-initials');
+
+            if (nameInput) {
+                nameInput.addEventListener('input', (e) => {
+                    const val = e.target.value;
+                    if (val) {
+                        welcomeMsg.textContent = `Welcome, ${val.split(' ')[0]}! 👋`;
+                        initials.textContent = val.slice(0, 2).toUpperCase();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

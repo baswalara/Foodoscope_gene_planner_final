@@ -1,0 +1,236 @@
+[
+    {
+        "Category":"Vitamin A",
+        "Nutrient \/ Reason":"Preformed Vitamin A",
+        "Food Item":"Liver",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Vitamin A",
+        "Nutrient \/ Reason":"Preformed Vitamin A",
+        "Food Item":"Fish",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Vitamin A",
+        "Nutrient \/ Reason":"Preformed Vitamin A",
+        "Food Item":"Eggs",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Vitamin A",
+        "Nutrient \/ Reason":"Preformed Vitamin A",
+        "Food Item":"Dairy products",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Vitamin A",
+        "Nutrient \/ Reason":"Provitamin A (carotenoids)",
+        "Food Item":"Carrots",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Vitamin A",
+        "Nutrient \/ Reason":"Provitamin A (carotenoids)",
+        "Food Item":"Spinach",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Vitamin A",
+        "Nutrient \/ Reason":"Provitamin A (carotenoids)",
+        "Food Item":"Kale",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Vitamin A",
+        "Nutrient \/ Reason":"Provitamin A (carotenoids)",
+        "Food Item":"Oranges",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Vitamin A",
+        "Nutrient \/ Reason":"Provitamin A (carotenoids)",
+        "Food Item":"Mango",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Vitamin A",
+        "Nutrient \/ Reason":"Provitamin A (carotenoids)",
+        "Food Item":"Butternut squash",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Vitamin A",
+        "Nutrient \/ Reason":"Listed sources",
+        "Food Item":"Cod liver oil",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Vitamin A",
+        "Nutrient \/ Reason":"Listed sources",
+        "Food Item":"Cantaloupe",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Vitamin A",
+        "Nutrient \/ Reason":"Listed sources",
+        "Food Item":"Sweet potato",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Vitamin A",
+        "Nutrient \/ Reason":"Listed sources",
+        "Food Item":"Bell peppers",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Vitamin A",
+        "Nutrient \/ Reason":"Listed sources",
+        "Food Item":"Chicken liver",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Vitamin A",
+        "Nutrient \/ Reason":"Listed sources",
+        "Food Item":"Tuna",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Vitamin A",
+        "Nutrient \/ Reason":"Listed sources",
+        "Food Item":"Grapes",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Vitamin A",
+        "Nutrient \/ Reason":"Fortified foods",
+        "Food Item":"Fortified milk",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Vitamin A",
+        "Nutrient \/ Reason":"Fortified foods",
+        "Food Item":"Fortified cereals",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Lactose Intolerance",
+        "Nutrient \/ Reason":"Lactose-containing foods",
+        "Food Item":"Milk",
+        "Instruction":"Avoid \/ Minimize"
+    },
+    {
+        "Category":"Lactose Intolerance",
+        "Nutrient \/ Reason":"Lactose-containing foods",
+        "Food Item":"Ice cream",
+        "Instruction":"Avoid \/ Minimize"
+    },
+    {
+        "Category":"Lactose Intolerance",
+        "Nutrient \/ Reason":"Lactose-containing foods",
+        "Food Item":"Soft cheeses",
+        "Instruction":"Avoid \/ Minimize"
+    },
+    {
+        "Category":"Lactose Intolerance",
+        "Nutrient \/ Reason":"Low-lactose alternatives",
+        "Food Item":"Fortified yogurt",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Lactose Intolerance",
+        "Nutrient \/ Reason":"Low-lactose alternatives",
+        "Food Item":"Almond milk",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Lactose Intolerance",
+        "Nutrient \/ Reason":"Low-lactose alternatives",
+        "Food Item":"Cashew milk",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Lactose Intolerance",
+        "Nutrient \/ Reason":"Low-lactose alternatives",
+        "Food Item":"Soy milk",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Lactose Intolerance",
+        "Nutrient \/ Reason":"Low-lactose alternatives",
+        "Food Item":"Coconut milk",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Lactose Intolerance",
+        "Nutrient \/ Reason":"Low-lactose alternatives",
+        "Food Item":"Low-fat cheese",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Lactose Intolerance",
+        "Nutrient \/ Reason":"Low-lactose alternatives",
+        "Food Item":"Paneer",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Whole Grains",
+        "Nutrient \/ Reason":"Whole grain intake",
+        "Food Item":"Brown rice",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Whole Grains",
+        "Nutrient \/ Reason":"Whole grain intake",
+        "Food Item":"Barley",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Whole Grains",
+        "Nutrient \/ Reason":"Whole grain intake",
+        "Food Item":"Buckwheat",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Inflammation",
+        "Nutrient \/ Reason":"Anti-inflammatory foods",
+        "Food Item":"Kale",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Inflammation",
+        "Nutrient \/ Reason":"Anti-inflammatory foods",
+        "Food Item":"Cinnamon",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Inflammation",
+        "Nutrient \/ Reason":"Anti-inflammatory foods",
+        "Food Item":"Ginger",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Inflammation",
+        "Nutrient \/ Reason":"Anti-inflammatory foods",
+        "Food Item":"Chia seeds",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Inflammation",
+        "Nutrient \/ Reason":"Anti-inflammatory foods",
+        "Food Item":"Blueberries",
+        "Instruction":"Include"
+    },
+    {
+        "Category":"Caffeine",
+        "Nutrient \/ Reason":"High-risk response",
+        "Food Item":"Caffeine (general)",
+        "Instruction":"Limit \/ Monitor"
+    },
+    {
+        "Category":"Alcohol",
+        "Nutrient \/ Reason":"Lifestyle recommendation",
+        "Food Item":"Alcohol",
+        "Instruction":"Best to avoid"
+    }
+]

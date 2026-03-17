@@ -1,0 +1,18 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Mac junk
+.DS_Store
+
+# Logs
+*.log
+
+# Env files
+.env
+
+# Node (if frontend uses it)
+node_modules/
+dist/
+build/
