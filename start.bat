@@ -27,7 +27,17 @@ if exist ".venv\Scripts\activate.bat" (
 
 echo [OK] Virtual Environment Activated
 
-:: 2. START BACKEND (Port 8000)
+:: 2. FREE PORTS (kill any process on 8000 or 8001 from a previous session)
+echo [..] Checking ports 8000 ^& 8001...
+for %%P in (8000 8001) do (
+    for /f "tokens=5" %%i in ('netstat -ano ^| findstr ":%%P " ^| findstr "LISTENING"') do (
+        echo    [!] Port %%P in use (PID %%i) -- freeing it...
+        taskkill /PID %%i /F >nul 2>&1
+    )
+)
+echo    [OK] Ports are clear
+
+:: 3. START BACKEND (Port 8000)
 echo [..] Starting Backend on Port 8000...
 start /b "" uvicorn backend.server:app --reload --port 8000 > nul 2>&1
 

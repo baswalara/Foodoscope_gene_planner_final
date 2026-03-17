@@ -25,6 +25,18 @@ fi
 
 echo "✅ Virtual Environment Activated"
 
+# 3. FREE PORTS (kill anything on 8000 or 8001 from a previous session)
+echo "🔍 Checking ports 8000 & 8001..."
+for PORT in 8000 8001; do
+    PID=$(lsof -ti tcp:$PORT 2>/dev/null)
+    if [ -n "$PID" ]; then
+        echo "   ⚡ Port $PORT in use (PID $PID) — freeing it..."
+        kill -9 $PID 2>/dev/null
+        sleep 0.3
+    fi
+done
+echo "   -> Ports are clear"
+
 # 3. START BACKEND (Port 8000)
 echo "🧠 Starting Backend on Port 8000..."
 # We run from root so Python finds the module path correctly
