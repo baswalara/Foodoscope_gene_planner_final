@@ -2,7 +2,6 @@
 // Generates a 7-day meal plan from available recipes, fitted to the user's target calories.
 
 const API_BASE_URL = "http://localhost:8000";
-
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
 // Calorie split per meal slot depending on meals-per-day
@@ -27,15 +26,22 @@ const CAL_SPLITS = {
     ],
 };
 
+// Module-level state (persists across regenerations without re-fetching)
+let allRecipes      = [];
+let allCuisines     = [];
+let activeCuisines  = new Set(); // cuisines currently selected = included
+
+// ── Entry point ─────────────────────────────────────────────────────────────
+
 export async function initDietPlan() {
     const section = document.getElementById('diet');
     if (!section) return;
 
-    const targetCal = parseInt(localStorage.getItem('foodoscope_targetCal') || '2000');
+    const targetCal   = parseInt(localStorage.getItem('foodoscope_targetCal') || '2000');
     const mealsPerDay = parseInt(localStorage.getItem('foodoscope_meals') || '3');
-    const splits = CAL_SPLITS[mealsPerDay] || CAL_SPLITS[3];
+    const splits      = CAL_SPLITS[mealsPerDay] || CAL_SPLITS[3];
 
-    // Show loading state
+    // Show spinner
     section.innerHTML = `
         <div class="diet-header">
             <h2>🗓️ Your 7-Day Diet Plan</h2>
@@ -49,45 +55,43 @@ export async function initDietPlan() {
             <p>Building your personalised plan…</p>
         </div>`;
 
-    let recipes = [];
-    try {
-        const res = await fetch(`${API_BASE_URL}/recommendations/test_user`);
-        if (!res.ok) throw new Error("API error");
-        const data = await res.json();
-        recipes = data.recipes || [];
-    } catch (e) {
-        section.innerHTML += `<p class="diet-error">⚠️ Could not load recipes. Make sure the backend is running.</p>`;
-        return;
+    // Only fetch from API when we don't have data yet (first load)
+    if (allRecipes.length === 0) {
+        try {
+            const res  = await fetch(`${API_BASE_URL}/recommendations/test_user`);
+            if (!res.ok) throw new Error("API error");
+            const data = await res.json();
+            allRecipes = data.recipes || [];
+        } catch {
+            section.innerHTML += `<p class="diet-error">⚠️ Could not load recipes. Make sure the backend is running.</p>`;
+            return;
+        }
+
+        if (allRecipes.length === 0) {
+            section.innerHTML = `<p class="diet-error">No recipes found. Please run generate_data.py first.</p>`;
+            return;
+        }
+
+        // Extract unique cuisines and select ALL by default
+        allCuisines    = [...new Set(allRecipes.map(r => r.region || 'Unknown').filter(Boolean))].sort();
+        activeCuisines = new Set(allCuisines);
     }
 
-    if (recipes.length === 0) {
-        section.innerHTML = `<p class="diet-error">No recipes found. Please run generate_data.py first.</p>`;
-        return;
-    }
-
-    // Build the plan
-    const plan = buildPlan(recipes, DAYS, splits, targetCal);
-    renderPlan(section, plan, targetCal, mealsPerDay, splits);
+    renderPlan(section, targetCal, mealsPerDay, splits);
 }
 
 // ── Plan builder ────────────────────────────────────────────────────────────
 
-function buildPlan(recipes, days, splits, targetCal) {
-    // Shuffle once so every day gets different meals
+function buildPlan(recipes, splits, targetCal) {
     const pool = [...recipes].sort(() => Math.random() - 0.5);
     let poolIdx = 0;
 
-    return days.map(day => {
+    return DAYS.map(day => {
         const meals = splits.map(slot => {
             const targetSlotCal = Math.round(targetCal * slot.share);
-            // Find best-fitting recipe within ±40% of target slot calories
             const recipe = pickBestRecipe(pool, poolIdx, targetSlotCal);
             poolIdx = (poolIdx + 1) % pool.length;
-            return {
-                label: slot.label,
-                targetCal: targetSlotCal,
-                recipe,
-            };
+            return { label: slot.label, targetCal: targetSlotCal, recipe };
         });
         const totalActual = meals.reduce((s, m) => s + parseFloat(m.recipe.calories || 0), 0);
         return { day, meals, totalActual: Math.round(totalActual) };
@@ -95,33 +99,68 @@ function buildPlan(recipes, days, splits, targetCal) {
 }
 
 function pickBestRecipe(pool, startIdx, targetCal) {
-    // Scan up to 30 recipes to find the closest calorie match
-    let best = pool[startIdx % pool.length];
+    let best     = pool[startIdx % pool.length];
     let bestDiff = Math.abs(parseFloat(best.calories || 0) - targetCal);
-
     for (let i = 1; i < Math.min(30, pool.length); i++) {
         const candidate = pool[(startIdx + i) % pool.length];
         const diff = Math.abs(parseFloat(candidate.calories || 0) - targetCal);
-        if (diff < bestDiff) {
-            best = candidate;
-            bestDiff = diff;
-        }
+        if (diff < bestDiff) { best = candidate; bestDiff = diff; }
     }
     return best;
 }
 
 // ── Renderer ────────────────────────────────────────────────────────────────
 
-function renderPlan(section, plan, targetCal, mealsPerDay, splits) {
+function renderPlan(section, targetCal, mealsPerDay, splits) {
+    // Filter recipes to only active cuisines
+    const filtered = allRecipes.filter(r => activeCuisines.has(r.region || 'Unknown'));
+
+    // Fallback if everything is deselected
+    const pool = filtered.length > 0 ? filtered : allRecipes;
+
+    const plan = buildPlan(pool, splits, targetCal);
+
+    const deselectedCount = allCuisines.length - activeCuisines.size;
+    const cuisineLabel    = deselectedCount === 0
+        ? 'All cuisines'
+        : `${activeCuisines.size} of ${allCuisines.length} cuisines`;
+
     section.innerHTML = `
         <div class="diet-header">
             <div class="diet-title-row">
                 <h2>🗓️ Your 7-Day Diet Plan</h2>
-                <button class="btn-regenerate" id="btn-regenerate">🔀 Regenerate</button>
+                <div class="diet-controls">
+                    <!-- Cuisine filter dropdown -->
+                    <div class="cuisine-dropdown" id="cuisine-dropdown">
+                        <button class="cuisine-dropdown-btn" id="cuisine-dropdown-btn">
+                            🌍 ${cuisineLabel} <span class="dropdown-arrow">▾</span>
+                        </button>
+                        <div class="cuisine-dropdown-menu" id="cuisine-dropdown-menu">
+                            <div class="cuisine-dropdown-header">
+                                <span>Filter cuisines</span>
+                                <div class="cuisine-quick-btns">
+                                    <button id="btn-select-all">All</button>
+                                    <button id="btn-deselect-all">None</button>
+                                </div>
+                            </div>
+                            <div class="cuisine-list">
+                                ${allCuisines.map(c => `
+                                    <label class="cuisine-item">
+                                        <input type="checkbox" class="cuisine-check" value="${c}"
+                                            ${activeCuisines.has(c) ? 'checked' : ''}>
+                                        <span>${c}</span>
+                                    </label>`).join('')}
+                            </div>
+                            <button class="cuisine-apply-btn" id="cuisine-apply">✓ Apply & Regenerate</button>
+                        </div>
+                    </div>
+                    <button class="btn-regenerate" id="btn-regenerate">🔀 Regenerate</button>
+                </div>
             </div>
             <div class="diet-meta-row">
                 <span class="diet-badge">🎯 ${targetCal} kcal / day</span>
                 <span class="diet-badge">🍽️ ${mealsPerDay} meals / day</span>
+                ${deselectedCount > 0 ? `<span class="diet-badge diet-badge-warning">⚠️ ${deselectedCount} cuisine${deselectedCount>1?'s':''} hidden</span>` : ''}
             </div>
         </div>
 
@@ -135,14 +174,56 @@ function renderPlan(section, plan, targetCal, mealsPerDay, splits) {
             <span class="legend-dot red" style="margin-left:16px"></span> Off target
         </div>`;
 
-    document.getElementById('btn-regenerate')?.addEventListener('click', () => initDietPlan());
+    bindControls(section, targetCal, mealsPerDay, splits);
 }
 
+function bindControls(section, targetCal, mealsPerDay, splits) {
+    // Regenerate button
+    document.getElementById('btn-regenerate')?.addEventListener('click', () => {
+        renderPlan(section, targetCal, mealsPerDay, splits);
+    });
+
+    // Toggle dropdown open/close
+    const dropdownBtn  = document.getElementById('cuisine-dropdown-btn');
+    const dropdownMenu = document.getElementById('cuisine-dropdown-menu');
+
+    dropdownBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('open');
+    });
+
+    // Close if clicking outside
+    document.addEventListener('click', (e) => {
+        if (!document.getElementById('cuisine-dropdown')?.contains(e.target)) {
+            dropdownMenu?.classList.remove('open');
+        }
+    }, { once: false });
+
+    // Select All / Deselect All quick buttons
+    document.getElementById('btn-select-all')?.addEventListener('click', () => {
+        document.querySelectorAll('.cuisine-check').forEach(cb => cb.checked = true);
+    });
+    document.getElementById('btn-deselect-all')?.addEventListener('click', () => {
+        document.querySelectorAll('.cuisine-check').forEach(cb => cb.checked = false);
+    });
+
+    // Apply & Regenerate
+    document.getElementById('cuisine-apply')?.addEventListener('click', () => {
+        activeCuisines = new Set(
+            [...document.querySelectorAll('.cuisine-check:checked')].map(cb => cb.value)
+        );
+        dropdownMenu.classList.remove('open');
+        renderPlan(section, targetCal, mealsPerDay, splits);
+    });
+}
+
+// ── Day / Meal renderers ─────────────────────────────────────────────────────
+
 function renderDay(dayPlan, targetCal) {
-    const diff = dayPlan.totalActual - targetCal;
-    const absDiff = Math.abs(diff);
+    const diff        = dayPlan.totalActual - targetCal;
+    const absDiff     = Math.abs(diff);
     const statusClass = absDiff <= 100 ? 'cal-on-target' : absDiff <= 250 ? 'cal-near' : 'cal-off';
-    const sign = diff >= 0 ? '+' : '';
+    const sign        = diff >= 0 ? '+' : '';
 
     return `
         <div class="diet-day-col">
@@ -158,7 +239,7 @@ function renderDay(dayPlan, targetCal) {
 }
 
 function renderMeal(meal) {
-    const r = meal.recipe;
+    const r   = meal.recipe;
     const cal = parseFloat(r.calories || 0);
     return `
         <div class="diet-meal-item">
@@ -171,4 +252,3 @@ function renderMeal(meal) {
             </div>
         </div>`;
 }
-

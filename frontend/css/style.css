@@ -768,6 +768,151 @@ label.label-error {
     background: #F0FDF4;
 }
 
+/* ── Diet controls row (holds dropdown + regenerate side-by-side) ── */
+.diet-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Warning badge for hidden cuisines */
+.diet-badge-warning {
+    background: #FEF3C7;
+    color: #92400E;
+    border-color: #FDE68A;
+}
+
+/* ── Cuisine multi-select dropdown ── */
+.cuisine-dropdown {
+    position: relative;
+}
+
+.cuisine-dropdown-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: white;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--text-dark);
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.cuisine-dropdown-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: #F0FDF4;
+}
+.dropdown-arrow {
+    font-size: 11px;
+    opacity: 0.6;
+    transition: transform 0.2s;
+}
+
+/* Dropdown panel */
+.cuisine-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    width: 240px;
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 14px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    z-index: 200;
+    overflow: hidden;
+    flex-direction: column;
+}
+.cuisine-dropdown-menu.open {
+    display: flex;
+}
+
+/* Header row inside dropdown */
+.cuisine-dropdown-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px 8px;
+    border-bottom: 1px solid #F3F4F6;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-grey);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+.cuisine-quick-btns {
+    display: flex;
+    gap: 6px;
+}
+.cuisine-quick-btns button {
+    background: #F3F4F6;
+    border: none;
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--text-dark);
+    transition: background 0.15s;
+}
+.cuisine-quick-btns button:hover {
+    background: #E5E7EB;
+}
+
+/* Scrollable list of cuisines */
+.cuisine-list {
+    overflow-y: auto;
+    max-height: 220px;
+    padding: 6px 0;
+}
+.cuisine-list::-webkit-scrollbar { width: 4px; }
+.cuisine-list::-webkit-scrollbar-thumb { background: #D1FAE5; border-radius: 2px; }
+
+/* Each cuisine row */
+.cuisine-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: background 0.1s;
+}
+.cuisine-item:hover {
+    background: #F9FAFB;
+}
+.cuisine-item input[type="checkbox"] {
+    accent-color: var(--primary);
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* Apply button */
+.cuisine-apply-btn {
+    margin: 8px 10px 10px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 9px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+.cuisine-apply-btn:hover {
+    opacity: 0.88;
+}
+
 /* Vertical list — one row per day */
 /* ── Horizontal scrolling track of day columns ── */
 .diet-scroll-track {
